@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    UriViewModel model = new ViewModelProvider(this).get(UriViewModel.class);
+    UriViewModel model;
 
     private Button uploadImage, uploadVideo;
     private static final Integer PICK_IMAGE_REQ = 1311;
@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         uploadImage = findViewById(R.id.upload_image);
         uploadVideo = findViewById(R.id.upload_video);
 
+        model = new ViewModelProvider(this).get(UriViewModel.class);
         uploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -42,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent();
-                i.setType("Video/*");
-                i.setAction(Intent.ACTION_PICK);
+                i.setType("video/*");
+                i.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(i, "Select Video"), PICK_VID_REQ);
             }
         });
@@ -54,12 +55,12 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == PICK_IMAGE_REQ && resultCode == RESULT_OK && data != null) {
-            model.imageUri=data.getData();
+            model.imageUri = data.getData();
             Toast.makeText(this, "Image Selected Successfully", Toast.LENGTH_SHORT).show();
         }
 
         if (requestCode == PICK_VID_REQ && resultCode == RESULT_OK && data != null) {
-            model.videoUri=data.getData();
+            model.videoUri = data.getData();
             Toast.makeText(this, "Video Selected Successfully", Toast.LENGTH_SHORT).show();
         }
     }
